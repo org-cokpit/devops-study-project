@@ -1,17 +1,25 @@
-trigger:
-  - main
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '18.x'
-    displayName: 'Instalar Node.js'
-
-  - script: npm install
-    displayName: 'Instalar dependências'
-
-  - script: node app.js
-    displayName: 'Executar aplicação'
+name: Build Node.js App
+ 
+on:
+  push:
+    branches:
+      - main
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+ 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+ 
+      - name: Instalar dependências
+        run: npm install
+ 
+      - name: Executar aplicação
+        run: node app.js
